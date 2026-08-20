@@ -1,19 +1,41 @@
+let allFiles = [];
+
 async function loadFiles() {
     const res = await fetch('/files');
-    const names = await res.json();
+    allFiles = await res.json();
+    renderFiles();
+}
+
+function renderFiles() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+
+    const filtered = allFiles.filter(name => 
+        name.trim().toLowerCase().startsWith(query)
+    );
 
     const list = document.getElementById('fileList');
     list.innerHTML = '';
 
-    names.forEach(name => {
-        const li = document.createElement('li')
-        const link = document.createElement('a')
-        link.href = '/download/' + encodeURIComponent(name)
-        link.textContent = name;
-        li.appendChild(link);
+    filtered.forEach(name => {
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.className = 'filename';
+        span.textContent = truncateName(name, 65);
+        span.title = name;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'deleteButton';
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener('click', () => deleteFile(name));
+
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
         list.appendChild(li);
     });
+
 }
+
+document.getElementById('searchInput').addEventListener('input', renderFiles);
 
 loadFiles();
 
@@ -36,3 +58,15 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     input.value = '';
     loadFiles();
 })
+
+async function deleteFile(name) {
+    await fetch('/files/' + encodeURIComponent(name), {
+        method: 'DELETE'
+    });
+    loadFiles();
+}
+
+function truncateName(name, maxLength) {
+    if (name.length <= maxLength) return name;
+    return name.slice(0, maxLength) + '...';
+}

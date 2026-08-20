@@ -1,3 +1,3 @@
 module local_file_transfer
 
-go 1.26.5
+go 1.25.12

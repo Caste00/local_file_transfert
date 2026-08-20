@@ -60,6 +60,20 @@ func listFile(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(names)
 }
 
+func deleteFile(w http.ResponseWriter, req *http.Request) {
+	filename := req.PathValue("filename")
+	safe := filepath.Base(filename)
+	path := filepath.Join("downloads", safe)
+	
+	err := os.Remove(path)
+	if err != nil {
+		http.Error(w, "Error deleting file", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func download(w http.ResponseWriter, req *http.Request) {
 	filename := req.PathValue("filename")
 	safe := filepath.Base(filename)
@@ -76,7 +90,11 @@ func main() {
 
 	http.HandleFunc("POST /upload", uploadFile)
 	http.HandleFunc("GET /files", listFile)
+	http.HandleFunc("DELETE /files/{filename}", deleteFile)
 	http.HandleFunc("GET /download/{filename}", download)
 
-	http.ListenAndServe(":8092", nil)
+	err := http.ListenAndServe(":8090", nil)
+	if err != nil {
+		panic(err)
+	}
 }

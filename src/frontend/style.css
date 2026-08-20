@@ -1,0 +1,130 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  background: #f4f4f5;
+  color: #222;
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+section {
+  max-width: 700px;
+  margin: 0 auto 25px;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08)
+}
+
+h2 {
+  margin-top: 0;
+}
+
+form {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+input[type="file"] {
+  flex: 1;
+}
+
+button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #555;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.filename {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+input[type="file"] {
+    font-size: 14px;
+}
+
+input[type="file"]::file-selector-button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #555;
+}
+
+.deleteButton {
+  background: #c0392b;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.deleteButton:hover {
+  background: #a93226;
+}
+
+#searchInput {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#searchInput:focus {
+  border-color: #333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+#searchInput::placeholder {
+  color: #999;
+}
