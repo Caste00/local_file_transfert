@@ -18,21 +18,23 @@ function renderFiles() {
 
     filtered.forEach(name => {
         const li = document.createElement('li');
-        const span = document.createElement('span');
-        span.className = 'filename';
-        span.textContent = truncateName(name, 65);
-        span.title = name;
+
+        const link = document.createElement('a');
+        link.className = 'filename';
+        link.href = '/download/' + encodeURIComponent(name);
+        link.textContent = truncateName(name, 65);
+        link.title = name;
+        link.download = name; // suggerisce il nome file al browser
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'deleteButton';
         deleteBtn.textContent = "Delete";
         deleteBtn.addEventListener('click', () => deleteFile(name));
 
-        li.appendChild(span);
+        li.appendChild(link);
         li.appendChild(deleteBtn);
         list.appendChild(li);
     });
-
 }
 
 document.getElementById('searchInput').addEventListener('input', renderFiles);

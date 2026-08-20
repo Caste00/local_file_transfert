@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"fmt"
 )
 
 //go:embed frontend
@@ -92,6 +93,8 @@ func main() {
 	http.HandleFunc("GET /files", listFile)
 	http.HandleFunc("DELETE /files/{filename}", deleteFile)
 	http.HandleFunc("GET /download/{filename}", download)
+
+	fmt.Println("Running on port 8090")
 
 	err := http.ListenAndServe(":8090", nil)
 	if err != nil {

@@ -1,0 +1,10 @@
+downloads/*
+!downloads/.gitkeep
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
