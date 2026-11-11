@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/fs"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -83,6 +84,35 @@ func download(w http.ResponseWriter, req *http.Request) {
 	http.ServeFile(w, req, path)
 }
 
+func printAddresses(port string) {
+    interfaces, err := net.Interfaces()
+    if err != nil {
+        fmt.Println("Error retrieving network interfaces:", err)
+        return
+    }
+
+    for _, iface := range interfaces {
+        // Ignora interfacce non attive e loopback
+        if iface.Flags&net.FlagUp == 0 || iface.Flags&net.FlagLoopback != 0 {
+            continue
+        }
+
+        addresses, err := iface.Addrs()
+        if err != nil {
+            continue
+        }
+
+        for _, addr := range addresses {
+            ipNet, ok := addr.(*net.IPNet)
+            if !ok || ipNet.IP.To4() == nil {
+                continue
+            }
+
+            fmt.Printf("http://%s:%s\n", ipNet.IP.String(), port)
+        }
+    }
+}
+
 func main() {
 	os.MkdirAll("downloads", 0755)
 
@@ -94,7 +124,8 @@ func main() {
 	http.HandleFunc("DELETE /files/{filename}", deleteFile)
 	http.HandleFunc("GET /download/{filename}", download)
 
-	fmt.Println("Running on port 8090")
+	fmt.Println("Running on:")
+	printAddresses("8090")
 
 	err := http.ListenAndServe(":8090", nil)
 	if err != nil {
